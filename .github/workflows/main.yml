@@ -1,25 +1,26 @@
-            - name: PyInstaller Action
-  # You may pin to the exact commit or the version.
-  # uses: Martin005/pyinstaller-action@dcfd75f8789130c10c0a34c3dee563e3f6906ea4
-  uses: Martin005/pyinstaller-action@v1.2.0
-  with: ./script.py
-    # path of your '.py' or '.spec' file. 
-  - This file will be used to create executable.
-  - If .py: Generated spec file will also be uploaded as artifact
+name: Build EXE
 
-    spec: # default is 
-    # path of your requirements.txt file
-    requirements: # optional, default is 
-    # Options to set for pyinstaller command Ex: options: '--onedir, -F'       (seperated by comma and space)
-  - Supported options: Check readme
+on:
+  push:
+    branches: [ "main", "master" ]
+  pull_request:
+    branches: [ "main", "master" ]
+  workflow_dispatch:
 
-    options: # optional, default is 
-    # specific python version you want to use
-    python_ver: # optional, default is 3.10
-    # specific python architecture you want to use
-    python_arch: # optional, default is x64
-    # Path on runner-os, where generated executable files are stored
-    exe_path: # optional, default is ./dist
-    # If passed, uploads executable artifact  with this name. Else, artifact won't be uploaded.
-    upload_exe_with_name: Koikatsu_Shader_Fixer
-          
+jobs:
+  build:
+    runs-on: windows-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: PyInstaller Action
+        uses: Martin005/pyinstaller-action@dcfd75f8789130c10c0a34c3dee563e3f6906ea4
+        with:
+          # 指定您的 Python 腳本名稱
+          spec: script.py
+          # 設定 PyInstaller 選項：打包成單檔、顯示主控台視窗
+          options: --onefile --console
+          # 指定上傳的執行檔名稱 (不含 .exe)
+          upload_exe_with_name: Koikatsu_Shader_Fixer
