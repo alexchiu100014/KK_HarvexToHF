@@ -1,6 +1,6 @@
 # **Koikatsu Shader Fixer (戀活 Shader 修復工具)**
 
-這是一個簡單但強大的 Python 工具，專門用於修復 **Koikatsu (戀活！)** 角色卡中因 Shader 名稱不一致導致的讀取錯誤。
+這是一個由Gemini生成，簡單但強大的 Python 工具，專門用於修復 **Koikatsu (戀活！)** 角色卡中因 Shader 名稱不一致導致的讀取錯誤。
 
 主要解決在不同整合包環境（例如 Madevil 整合包與 HF Patch）之間轉移角色卡時，因 HarvexARC Shader 命名定義不同（/ 與 \- 的差異）而導致材質遺失或變為粉紅色的問題。
 
@@ -47,3 +47,5 @@
 
 1. 將 Koikatsu\_Shader\_Fixer.exe 放入角色卡資料夾。  
 2. 雙擊執行即可。
+## **Roadmap**
+**補齊剩下的Shader**
