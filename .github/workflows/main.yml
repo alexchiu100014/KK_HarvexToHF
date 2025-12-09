@@ -4,7 +4,7 @@ on:
   push:
     branches: [ "main" ]
     paths:
-      - 'script.py' # 只有這個檔案變更時才觸發打包
+      - 'fix_shader.py' # 只有這個檔案變更時才觸發打包
   workflow_dispatch:    # 讓你也能手動按按鈕觸發
 
 # 重要：賦予寫入權限，才能上傳檔案到 Release
