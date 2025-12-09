@@ -1,47 +1,44 @@
-name: Build EXE
+name: Build and Auto-Release
 
 on:
   push:
-    branches: [ "main", "master" ]
+    branches: [ "main" ]
     paths:
-      - 'script.py'  # 指定只有這個檔案變更時才觸發
-      # - 'requirements.txt' # 如果你有依賴檔，建議也加上這行
-  
-  pull_request:
-    branches: [ "main", "master" ]
-    paths:
-      - 'fix_shader.py'  # PR 同理
-  
-  workflow_dispatch: # 保留這個，讓你仍然可以手動強制執行
+      - 'script.py' # 只有這個檔案變更時才觸發打包
+  workflow_dispatch:    # 讓你也能手動按按鈕觸發
+
+# 重要：賦予寫入權限，才能上傳檔案到 Release
+permissions:
+  contents: write
 
 jobs:
-  # ... (下方的 jobs 內容保持不變)
-  build:
+  build-and-release:
     runs-on: windows-latest
     
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # 1. 設定 Python 環境
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.10' # 建議指定一個穩定版本
+          python-version: '3.10'
 
-      # 2. 安裝 PyInstaller
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install pyinstaller
 
-      # 3. 執行打包指令 (原本 Action 做的事)
       - name: Build with PyInstaller
-        run: pyinstaller --onefile --console script.py
+        run: pyinstaller --onefile --console fix_shader.py
 
-      # 4. 上傳產物 (使用最新的 v4 版本)
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v4
+      # 更新 Release 步驟
+      - name: Update Release
+        uses: softprops/action-gh-release@v2
         with:
-          name: Koikatsu_Shader_Fixer  # 下載時的壓縮檔名稱
-          path: dist/script.exe    # PyInstaller 預設會將檔案放在 dist 資料夾
+          tag_name: latest       # 固定標籤名稱，永遠只更新這一個
+          name: "Latest Build"   # Release 頁面的標題
+          files: dist/fix_shader.exe
+          draft: false
+          prerelease: false      # 如果你想標記為「預發布」可改為 true
+          make_latest: true      # 標記為最新版本
